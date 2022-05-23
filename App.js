@@ -4,10 +4,11 @@ import {
   Text, 
   View, 
   TextInput, 
+  FlatList,
   Platform,
-  TouchableOpacity,
-  TouchableOpacityBase,
 } from 'react-native';
+import { Button } from './components/Button';
+import { SkillCard } from './components/SkillCard';
 
 export default function App() {
   const [newSkill, setNewSkill] = useState('');
@@ -21,30 +22,22 @@ export default function App() {
       <Text style={styles.title}>
         Welcome, Samila!
       </Text>
-     
       <TextInput
         style={styles.input}
         placeholder="New skill"
         placeholderTextColor="#555"
         onChangeText={setNewSkill}
       />
-      <TouchableOpacity 
-        style={styles.button}
-        activeOpacity={0.6}
-        onPress={handleAddNewSkill}
-        >
-        <Text style={styles.buttonText}>Add</Text>
-      </TouchableOpacity>
+      <Button onPress={handleAddNewSkill}/>
       <Text style={[styles.title, {marginVertical: 30}]}>
         My skills
       </Text>
-      {
-        mySkills.map(skill => (
-          <TouchableOpacity key={skill} style={styles.buttonSkill}>
-            <Text style={styles.skill}>{skill}</Text>
-          </TouchableOpacity>
-        ))
-      }
+      <FlatList
+        data={mySkills}
+        keyExtractor={item => item}
+        renderItem={({item}) => (
+          <SkillCard skill={item}/>)}
+      />
     </View>
   );
 }
@@ -68,30 +61,6 @@ const styles = StyleSheet.create({
     padding: Platform.OS === 'ios' ? 15 : 10, //Customização baseada na plataforma
     marginTop: 30,
     borderRadius: 7,
-  },
-  button: {
-    backgroundColor: '#A379F7',
-    padding: 10,
-    borderRadius: 7,
-    alignItems: 'center', //React native: todos os elementos em flex como default 
-    marginTop: 20,
-  },
-  buttonText: {
-    color: '#FFF',
-    fontSize: 17,
-    fontWeight: 'bold',
-  },
-  buttonSkill:{
-    backgroundColor: '#1f1e25',
-    padding: 15,
-    borderRadius: 50,
-    alignItems: 'center',
-    marginBottom: 5,
-  },
-  skill: {
-    color: '#FFF',
-    fontSize: 20,
-    fontWeight: 'bold',
   },
 });
  
